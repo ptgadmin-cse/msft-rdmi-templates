@@ -93,7 +93,8 @@
             "metadata": {
                 "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
             },
-            "defaultValue": "https://raw.githubusercontent.com/PeopleTechRDS/ARMnScale/RDmiTenant-Deployment-with-existing-AD/"
+            
+            "defaultValue": "https://raw.githubusercontent.com/PeopleTechRDS/msft-rdmi-templates/master/ARM-ExistingADandHostpool"
         },
         "_artifactsLocationSasToken": {
             "type": "securestring",
