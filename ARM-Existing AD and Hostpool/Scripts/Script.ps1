@@ -9,6 +9,13 @@ param(
     [parameter(mandatory = $true)]       
     [string]$HostPoolName,
 
+    [parameter(mandatory = $false)]       
+    [string]$Description,
+
+    [parameter(mandatory = $false)]       
+    [string]$FriendlyName,
+
+
     [parameter(mandatory = $true)]       
     [int]$MaxSessionLimit,
 
@@ -37,7 +44,8 @@ param(
     [string]$AgentInstaller
     )
 
-
+Expand-Archive ".\DeployAgent.zip" -DestinationPath "C:\"
+cd "C:\DeployAgent"
 $CheckRegistery=Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RDInfraAgent
 $SessionHostName=(Get-WmiObject win32_computersystem).DNSHostName+"."+(Get-WmiObject win32_computersystem).Domain
 if(!$CheckRegistery){
@@ -52,20 +60,21 @@ $domaincredentials=New-Object -TypeName System.Management.Automation.PSCredentia
 
 #Setting RDS Context
 Set-RdsContext -DeploymentUrl $RDBrokerURL -Credential $Credentials
+write-host "executed success"
 #Getting RDS Tenant
 $GetTenant=Get-RdsTenant
 $TenantName=$GetTenant.TenantName
 $HPName=Get-RdsHostPool -TenantName $TenantName -Name $HostPoolName -ErrorAction SilentlyContinue
 if(!$HPName){
 $Registered=Export-RdsRegistrationInfo -TenantName $TenantName -HostPoolName $HostPoolName
-.\DeployAgent.ps1 -ComputerName $SessionHostName -AgentInstaller $AgentInstaller -SxSStackInstaller $SxSStackInstaller -InitializeDBSecret $InitializeDBSecret -AdminCredentials $domaincredentials -TenantName $TenantName -PoolName $HostPoolName -RegistrationToken $Registered.Token -StartAgent
-Set-RdsSessionHost -TenantName $TenantName -HostPoolName $HostPoolName -Name $SessionHostName -AllowNewSession $true -MaxSessionLimit $MaxSessionLimit
+#.\DeployAgent.ps1 -ComputerName $SessionHostName -AgentInstaller $AgentInstaller -SxSStackInstaller $SxSStackInstaller -InitializeDBSecret $InitializeDBSecret -AdminCredentials $domaincredentials -TenantName $TenantName -PoolName $HostPoolName -RegistrationToken $Registered.Token -StartAgent
+#Set-RdsSessionHost -TenantName $TenantName -HostPoolName $HostPoolName -Name $SessionHostName -AllowNewSession $true -MaxSessionLimit $MaxSessionLimit
 }
 Else
 {
 $Hostpool=New-RdsHostPool -TenantName $TenantName -Name $HostPoolName -Description $Description -FriendlyName $FriendlyName
 $ToRegister=New-RdsRegistrationInfo -TenantName $TenantName -HostPoolName $HostPoolName -ExpirationHours $Hours
-.\DeployAgent.ps1 -ComputerName $SessionHostName -AgentInstaller $AgentInstaller -SxSStackInstaller $SxSStackInstaller -InitializeDBSecret $InitializeDBSecret -AdminCredentials $domaincredentials -TenantName $TenantName -PoolName $HostPoolName -RegistrationToken $ToRegister.Token -StartAgent
-Set-RdsSessionHost -TenantName $TenantName -HostPoolName $HostPoolName -Name $SessionHostName -AllowNewSession $true -MaxSessionLimit $MaxSessionLimit
+#.\DeployAgent.ps1 -ComputerName $SessionHostName -AgentInstaller $AgentInstaller -SxSStackInstaller $SxSStackInstaller -InitializeDBSecret $InitializeDBSecret -AdminCredentials $domaincredentials -TenantName $TenantName -PoolName $HostPoolName -RegistrationToken $ToRegister.Token -StartAgent
+#Set-RdsSessionHost -TenantName $TenantName -HostPoolName $HostPoolName -Name $SessionHostName -AllowNewSession $true -MaxSessionLimit $MaxSessionLimit
 }
 }
