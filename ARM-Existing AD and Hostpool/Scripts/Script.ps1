@@ -62,8 +62,9 @@ $domaincredentials=New-Object -TypeName System.Management.Automation.PSCredentia
 Set-RdsContext -DeploymentUrl $RDBrokerURL -Credential $Credentials
 write-host "executed success"
 #Getting RDS Tenant
-$GetTenant=Get-RdsTenant
-$TenantName=$GetTenant.TenantName
+#$GetTenant=Get-RdsTenant
+#$TenantName=$GetTenant.TenantName
+$TenantName="MSFT-Tenant"
 $HPName=Get-RdsHostPool -TenantName $TenantName -Name $HostPoolName -ErrorAction SilentlyContinue
 if(!$HPName){
 $Registered=Export-RdsRegistrationInfo -TenantName $TenantName -HostPoolName $HostPoolName
