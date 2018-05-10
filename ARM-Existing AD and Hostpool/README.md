@@ -16,6 +16,3 @@ Click the button below to deploy:
 <a href="http://armviz.io/#/?load=https://raw.githubusercontent.com/PeopleTechRDS/msft-rdmi-templates/master/ARM-Existing%20AD%20and%20Hostpool/azuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
-
-
-https://raw.githubusercontent.com/Azure/RDS-Templates/master/rdmi-peopletech/ARM-Existing%20AD%20and%20Hostpool/azuredeploy.json
