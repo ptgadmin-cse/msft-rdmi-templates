@@ -312,11 +312,11 @@
                         "autoUpgradeMinorVersion": true,
                         "settings": {
                             "fileUris": [
-                                "https://raw.githubusercontent.com/PeopleTechRDS/msft-rdmi-templates/master/ARM-Existing%20AD%20and%20Hostpool/Scripts/Script.ps1"
+                                "https://raw.githubusercontent.com/PeopleTechRDS/msft-rdmi-templates/master/ARM-Existing%20AD%20and%20Hostpool/Scripts/Script1.ps1"
                             ]
                         },
                         "protectedSettings": {
-                            "commandToExecute": "[concat( 'powershell -noninteractive -executionpolicy bypass -file script.ps1', variables('scriptParameters'))]"
+                            "commandToExecute": "[concat( 'powershell -noninteractive -executionpolicy bypass -file script1.ps1', variables('scriptParameters'))]"
                         }
                     }
                 }
