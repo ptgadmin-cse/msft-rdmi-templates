@@ -2,7 +2,10 @@
 $computers=Get-ADComputer -Filter 'Name -like "rdsh*"'
 $computerlist=$computers.name
 
-Invoke-Command -ComputerName $computerlist -ScriptBlock{
+$DAdminSecurepass=ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force
+$domaincredentials=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList($DomainAdminUsername, $DAdminSecurepass)
+
+Invoke-Command -ComputerName $computerlist -Credential $domaincredentials -ScriptBlock{
 param($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
 Invoke-WebRequest -Uri $fileURI -OutFile "C:\DeployAgent.zip"
 Expand-Archive "C:\DeployAgent.zip" -DestinationPath "C:\"
@@ -10,7 +13,7 @@ cd "C:\DeployAgent"
 $CheckRegistery=Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RDInfraAgent
 $SessionHostName=(Get-WmiObject win32_computersystem).DNSHostName+"."+(Get-WmiObject win32_computersystem).Domain
 if(!$CheckRegistery){
-Import-Module .\PowershellModules\Microsoft.RDInfra.RDPowershell.dll
+Import-Module ".\PowershellModules\Microsoft.RDInfra.RDPowershell.dll"
 $Securepass=ConvertTo-SecureString -String $DelegateAdminpassword -AsPlainText -Force
 $Credentials=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList($DelegateAdminUsername, $Securepass)
 
