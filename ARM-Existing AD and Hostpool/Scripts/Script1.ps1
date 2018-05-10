@@ -1,44 +1,9 @@
-﻿[cmdletbinding()]
-param(
-    [parameter(mandatory = $true)]
-    [string]$RDBrokerURL,
+﻿
+$computers=Get-ADComputer -Filter 'Name -like "rdsh*"'
+$computerlist=$computers.name
 
-    [parameter(mandatory = $true)]
-    [string]$InitializeDBSecret,
-
-    [parameter(mandatory = $true)]       
-    [string]$HostPoolName,
-
-    [parameter(mandatory = $false)]       
-    [string]$Description,
-
-    [parameter(mandatory = $false)]       
-    [string]$FriendlyName,
-
-
-    [parameter(mandatory = $true)]       
-    [int]$MaxSessionLimit,
-
-    [parameter(mandatory = $true)] 
-    [string]$Hours,
-
-    [parameter(mandatory = $true)] 
-    [string]$fileURI,
-   
-    [parameter(mandatory = $true)]       
-    [string]$DelegateAdminUsername,
-
-    [parameter(mandatory = $true)]       
-    [string]$DelegateAdminpassword,
-
-    
-    [parameter(mandatory = $true)] 
-    [string]$DomainAdminUsername,
-
-    [parameter(mandatory = $true)] 
-    [string]$DomainAdminPassword
-    )
-
+Invoke-Command -ComputerName $computerlist -ScriptBlock{
+param($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
 Invoke-WebRequest -Uri $fileURI -OutFile "C:\DeployAgent.zip"
 Expand-Archive "C:\DeployAgent.zip" -DestinationPath "C:\"
 cd "C:\DeployAgent"
@@ -75,3 +40,9 @@ $ToRegister=New-RdsRegistrationInfo -TenantName $TenantName -HostPoolName $HostP
 Set-RdsSessionHost -TenantName $TenantName -HostPoolName $HostPoolName -Name $SessionHostName -AllowNewSession $true -MaxSessionLimit $MaxSessionLimit
 }
 }
+
+} -ArgumentList ($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
+
+
+
+
