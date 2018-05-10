@@ -1,4 +1,4 @@
-﻿.\New-ImpersonateUser.ps1 -Username $username -Domain $DomainAdminUsername -Password $DomainAdminPassword
+﻿
 $computers=Get-ADComputer -Filter 'Name -like "rdsh*"'
 $computerlist=$computers.name
 
