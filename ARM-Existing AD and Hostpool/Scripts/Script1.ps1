@@ -22,6 +22,8 @@ param(
     [parameter(mandatory = $true)] 
     [string]$Hours,
 
+    [parameter(mandatory = $true)] 
+    [string]$fileURI,
    
     [parameter(mandatory = $true)]       
     [string]$DelegateAdminUsername,
@@ -37,7 +39,8 @@ param(
     [string]$DomainAdminPassword
     )
 
-Expand-Archive ".\DeployAgent.zip" -DestinationPath "C:\"
+Invoke-WebRequest -Uri $fileURI -OutFile "C:\DeployAgent.zip"
+Expand-Archive "C:\DeployAgent.zip" -DestinationPath "C:\"
 cd "C:\DeployAgent"
 $CheckRegistery=Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RDInfraAgent
 $SessionHostName=(Get-WmiObject win32_computersystem).DNSHostName+"."+(Get-WmiObject win32_computersystem).Domain
