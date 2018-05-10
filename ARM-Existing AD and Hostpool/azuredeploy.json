@@ -308,18 +308,14 @@
                     "properties": {
                         "publisher": "Microsoft.Compute",
                         "type": "CustomScriptExtension",
-                        "typeHandlerVersion":  "2.11",
+                        "typeHandlerVersion":  "1.8",
                         "autoUpgradeMinorVersion": true,
                         "settings": {
-                            "fileUris": [
-                                "https://raw.githubusercontent.com/PeopleTechRDS/msft-rdmi-templates/master/ARM-Existing%20AD%20and%20Hostpool/Scripts/Script1.ps1"
-                            ]
-                        },
-                        "protectedSettings": {
-                            "commandToExecute": "[concat( 'powershell -noninteractive -executionpolicy bypass -file script1.ps1', variables('scriptParameters'))]"
+                            "fileUris": ["https://raw.githubusercontent.com/PeopleTechRDS/msft-rdmi-templates/master/ARM-Existing%20AD%20and%20Hostpool/Scripts/Script1.ps1"],
+                             "commandToExecute": "[concat( 'powershell -noninteractive -executionpolicy bypass -file script1.ps1', variables('scriptParameters'))]"
+                        } 
                         }
                     }
-                }
 
             ]
         }
