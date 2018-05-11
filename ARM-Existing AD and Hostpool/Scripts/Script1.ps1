@@ -47,6 +47,7 @@ $domaincredentials=New-Object -TypeName System.Management.Automation.PSCredentia
 Invoke-Command -ComputerName $computerlist -Credential $domaincredentials -ScriptBlock{
 param($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
 Invoke-WebRequest -Uri $fileURI -OutFile "C:\DeployAgent.zip"
+Start-Sleep -Seconds 240
 Expand-Archive "C:\DeployAgent.zip" -DestinationPath "C:\"
 cd "C:\DeployAgent"
 $CheckRegistery=Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RDInfraAgent
