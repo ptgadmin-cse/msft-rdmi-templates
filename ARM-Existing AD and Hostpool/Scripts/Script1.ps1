@@ -49,7 +49,8 @@ Invoke-Command -ComputerName $computer -Credential $domaincredentials -ScriptBlo
 param($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
 Invoke-WebRequest -Uri $fileURI -OutFile "C:\DeployAgent.zip"
 Start-Sleep -Seconds 240
-Expand-Archive "C:\DeployAgent.zip" -DestinationPath "C:\"
+New-Item -Path C:\DeployAgent -ItemType directory -Force -ErrorAction SilentlyContinue
+Expand-Archive "C:\DeployAgent.zip" -DestinationPath "C:\DeployAgent" -ErrorAction SilentlyContinue
 cd "C:\DeployAgent"
 $CheckRegistery=Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RDInfraAgent" -ErrorAction SilentlyContinue
 $SessionHostName=(Get-WmiObject win32_computersystem).DNSHostName+"."+(Get-WmiObject win32_computersystem).Domain
@@ -57,7 +58,6 @@ if(!$CheckRegistery){
 Import-Module .\PowershellModules\Microsoft.RDInfra.RDPowershell.dll
 $Securepass=ConvertTo-SecureString -String $DelegateAdminpassword -AsPlainText -Force
 $Credentials=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList($DelegateAdminUsername, $Securepass)
-
 $DAdminSecurepass=ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force
 $domaincredentials=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList($DomainAdminUsername, $DAdminSecurepass)
 
@@ -84,6 +84,7 @@ $ToRegister=New-RdsRegistrationInfo -TenantName $TenantName -HostPoolName $HostP
 Set-RdsSessionHost -TenantName $TenantName -HostPoolName $HostPoolName -Name $SessionHostName -AllowNewSession $true -MaxSessionLimit $MaxSessionLimit
 }
 }
-
+Remove-Item -Path "C:\DeployAgent.zip" -Recurse -force
+Remove-Item -Path "C:\DeployAgent" -Recurse -Force
 } -ArgumentList ($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
 }
