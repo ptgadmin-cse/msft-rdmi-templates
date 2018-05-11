@@ -1,8 +1,14 @@
-﻿
+﻿param(
+[Parameter(Mandatory=$True)]
+    [String] $DomainAdminUsername,
+    [Parameter(Mandatory=$True)]
+    [string] $DomainAdminPassword
+    )
+
 $computers=Get-ADComputer -Filter 'Name -like "rdsh*"'
 $computerlist=$computers.name
 
-$DAdminSecurepass= $DomainAdminPassword
+$DAdminSecurepass= ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force 
 $domaincredentials=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList($DomainAdminUsername, $DAdminSecurepass)
 
 Invoke-Command -ComputerName $computerlist -Credential $domaincredentials -ScriptBlock{
