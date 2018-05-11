@@ -49,7 +49,7 @@ Invoke-Command -ComputerName $computerlist -Credential $domaincredentials -Scrip
 param($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
 Invoke-WebRequest -Uri $fileURI -OutFile "C:\DeployAgent.zip"
 Start-Sleep -Seconds 240
-New-Item -Path C:\DeployAgent -ItemType directory -Force -ErrorAction SilentlyContinue
+New-Item -Path "C:\DeployAgent" -ItemType directory -Force -ErrorAction SilentlyContinue
 Expand-Archive "C:\DeployAgent.zip" -DestinationPath "C:\DeployAgent" -ErrorAction SilentlyContinue
 cd "C:\DeployAgent"
 $CheckRegistery=Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RDInfraAgent" -ErrorAction SilentlyContinue
@@ -71,7 +71,7 @@ write-host "executed success"
 #$TenantName=$GetTenant.TenantName
 $TenantName="MSFT-Tenant"
 $HPName=Get-RdsHostPool -TenantName $TenantName -Name $HostPoolName -ErrorAction SilentlyContinue
-if(!$HPName){
+if($HPName){
 $Registered=Export-RdsRegistrationInfo -TenantName $TenantName -HostPoolName $HostPoolName
 .\DeployAgent.ps1 -ComputerName $SessionHostName -AgentInstaller ".\RDInfraAgentInstall\Microsoft.RDInfra.RDAgent.Installer-x64.msi" -SxSStackInstaller ".\RDInfraSxSStackInstall\Microsoft.RDInfra.StackSxS.Installer-x64.msi" -InitializeDBSecret $InitializeDBSecret -AdminCredentials $domaincredentials -TenantName $TenantName -PoolName $HostPoolName -RegistrationToken $Registered.Token -StartAgent
 Set-RdsSessionHost -TenantName $TenantName -HostPoolName $HostPoolName -Name $SessionHostName -AllowNewSession $true -MaxSessionLimit $MaxSessionLimit
