@@ -44,8 +44,8 @@ $computerlist=$computers.name
 $DAdminSecurepass= ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force 
 $domaincredentials=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList($DomainAdminUsername, $DAdminSecurepass)
 
-foreach($computer in $computerlist){
-Invoke-Command -ComputerName $computer -Credential $domaincredentials -ScriptBlock{
+
+Invoke-Command -ComputerName $computerlist -Credential $domaincredentials -ScriptBlock{
 param($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
 Invoke-WebRequest -Uri $fileURI -OutFile "C:\DeployAgent.zip"
 Start-Sleep -Seconds 240
@@ -87,4 +87,3 @@ Set-RdsSessionHost -TenantName $TenantName -HostPoolName $HostPoolName -Name $Se
 #Remove-Item -Path "C:\DeployAgent.zip" -Recurse -force
 #Remove-Item -Path "C:\DeployAgent" -Recurse -Force
 } -ArgumentList ($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
-}
