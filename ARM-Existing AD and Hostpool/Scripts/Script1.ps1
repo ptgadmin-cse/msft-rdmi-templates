@@ -1,8 +1,41 @@
 ﻿param(
-[Parameter(Mandatory=$True)]
-    [String] $DomainAdminUsername,
-    [Parameter(Mandatory=$True)]
-    [string] $DomainAdminPassword
+    [parameter(mandatory = $true)]
+    [string]$RDBrokerURL,
+
+    [parameter(mandatory = $true)]
+    [string]$InitializeDBSecret,
+
+    [parameter(mandatory = $true)]       
+    [string]$HostPoolName,
+
+    [parameter(mandatory = $false)]       
+    [string]$Description,
+
+    [parameter(mandatory = $false)]       
+    [string]$FriendlyName,
+
+
+    [parameter(mandatory = $true)]       
+    [int]$MaxSessionLimit,
+
+    [parameter(mandatory = $true)] 
+    [string]$Hours,
+
+    [parameter(mandatory = $true)] 
+    [string]$fileURI,
+   
+    [parameter(mandatory = $true)]       
+    [string]$DelegateAdminUsername,
+
+    [parameter(mandatory = $true)]       
+    [string]$DelegateAdminpassword,
+
+    
+    [parameter(mandatory = $true)] 
+    [string]$DomainAdminUsername,
+
+    [parameter(mandatory = $true)] 
+    [string]$DomainAdminPassword
     )
 
 $computers=Get-ADComputer -Filter 'Name -like "rdsh*"'
