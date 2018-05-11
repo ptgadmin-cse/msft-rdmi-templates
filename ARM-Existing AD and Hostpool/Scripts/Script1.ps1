@@ -50,7 +50,7 @@ Invoke-WebRequest -Uri $fileURI -OutFile "C:\DeployAgent.zip"
 Start-Sleep -Seconds 240
 Expand-Archive "C:\DeployAgent.zip" -DestinationPath "C:\"
 cd "C:\DeployAgent"
-$CheckRegistery=Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RDInfraAgent
+$CheckRegistery=Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RDInfraAgent" -ErrorAction SilentlyContinue
 $SessionHostName=(Get-WmiObject win32_computersystem).DNSHostName+"."+(Get-WmiObject win32_computersystem).Domain
 if(!$CheckRegistery){
 Import-Module .\PowershellModules\Microsoft.RDInfra.RDPowershell.dll
