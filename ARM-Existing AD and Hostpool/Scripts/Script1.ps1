@@ -84,7 +84,7 @@ $ToRegister=New-RdsRegistrationInfo -TenantName $TenantName -HostPoolName $HostP
 Set-RdsSessionHost -TenantName $TenantName -HostPoolName $HostPoolName -Name $SessionHostName -AllowNewSession $true -MaxSessionLimit $MaxSessionLimit
 }
 }
-Remove-Item -Path "C:\DeployAgent.zip" -Recurse -force
-Remove-Item -Path "C:\DeployAgent" -Recurse -Force
+#Remove-Item -Path "C:\DeployAgent.zip" -Recurse -force
+#Remove-Item -Path "C:\DeployAgent" -Recurse -Force
 } -ArgumentList ($RDBrokerURL,$InitializeDBSecret,$HostPoolName,$Description,$FriendlyName,$MaxSessionLimit,$Hours,$fileURI,$DelegateAdminUsername,$DelegateAdminpassword,$DomainAdminUsername,$DomainAdminPassword)
 }
